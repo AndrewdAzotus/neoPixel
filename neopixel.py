@@ -78,7 +78,7 @@ class Neopixel:
 
     # Create a gradient with two RGB colors between "pixel1" and "pixel2" (inclusive)
     # Function accepts two (r, g, b) / (r, g, b, w) tuples
-    def set_pixel_line_gradient(self, pixel1, pixel2, left_rgb_w, right_rgb_w):
+    def set_pixel_line_gradient(self, pixel1, pixel2, left_rgb_w, right_rgb_w, howBright):
         if pixel2 - pixel1 == 0:
             return
         right_pixel = max(pixel1, pixel2)
@@ -92,15 +92,15 @@ class Neopixel:
             # if it's (r, g, b, w)
             if len(left_rgb_w) == 4 and 'W' in self.mode:
                 white = round((right_rgb_w[3] - left_rgb_w[3]) * fraction + left_rgb_w[3])
-                self.set_pixel(left_pixel + i, (red, green, blue, white))
+                self.set_pixel(left_pixel + i, (red, green, blue, white), howBright)
             else:
-                self.set_pixel(left_pixel + i, (red, green, blue))
+                self.set_pixel(left_pixel + i, (red, green, blue), howBright)
 
     # Set an array of pixels starting from "pixel1" to "pixel2" (inclusive) to the desired color.
     # Function accepts (r, g, b) / (r, g, b, w) tuple
-    def set_pixel_line(self, pixel1, pixel2, rgb_w):
+    def set_pixel_line(self, pixel1, pixel2, rgb_w, howBright = None):
         for i in range(pixel1, pixel2 + 1):
-            self.set_pixel(i, rgb_w)
+            self.set_pixel(i, rgb_w, howBright)
 
     # Set red, green and blue value of pixel on position <pixel_num>
     # Function accepts (r, g, b) / (r, g, b, w) tuple
@@ -168,7 +168,6 @@ class Neopixel:
 
         return r, g, b
 
-
     # Rotate <num_of_pixels> pixels to the left
     def rotate_left(self, num_of_pixels):
         if num_of_pixels == None:
@@ -194,7 +193,7 @@ class Neopixel:
 
     # Set all pixels to given rgb values
     # Function accepts (r, g, b) / (r, g, b, w)
-    def fill(self, rgb_w):
+    def fill(self, rgb_w, howBright = None):
         for i in range(self.num_leds):
-            self.set_pixel(i, rgb_w)
+            self.set_pixel(i, rgb_w, howBright)
         time.sleep(self.delay)
